@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% block body%}
+
+
+<div class="mt-5 pt-4">
+    <div class="container dark-grey-text mt-5">
+      <div class="row wow fadeIn">
+        <div class="col-md-6 mb-4">
+          <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" class="img-fluid" alt="">
+        </div>
+        <div class="col-md-6 mb-4">
+          <div class="p-4">
+            <div class="mb-3">
+              <a href="">
+                <span class="badge purple mr-1">{{item.category}}</span>
+              </a>
+              <a href="">
+                <span class="badge blue mr-1">New</span>
+              </a>
+              <a href="">
+                <span class="badge red mr-1">Bestseller</span>
+              </a>
+            </div>
+            <p class="lead">
+              <span>${{item.price}}</span>
+            </p>
+            <p class="lead font-weight-bold">Description</p>
+            <p>{{item.description}}</p>
+            <form class="d-flex justify-content-left">
+              <input type="number" value="{{wutt}}" aria-label="Search" class="form-control" style="width: 100px">
+              <a href="{{item.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{include 'includes/footer.html'}

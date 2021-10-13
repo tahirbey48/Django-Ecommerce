@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+<br>
+<br>
+<br>
+<div class = "container" style = "margin-top: 200;">
+    <h3>PLEASE SUBMIT YOUR PAYMENT </h3>
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">SUBMIT</button>
+    </form
+</div>
+{% endblock %}

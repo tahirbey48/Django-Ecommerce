@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block body %}
+<div class = "container" style = "margin-top: 150px;">
+    <h3>ORDER SUMMARY PAGE</h3>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">price</th>
+            <th scope="col">Total Price</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in object.items.all %}
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">{{i.item.title}} </th>
+            <th scope="col">{{i.quantity}}</th>
+            <th scope="col">{{i.item.price}}</th>
+            <th scope="col">{{i.get_total_single_item_price}}</th>
+            <th scope="col"><a href="{% url 'app1:addtocart' i.item.slug %}"> + </a> ....  <a href="{% url 'app1:removefromcart' i.item.slug %}"> remove </a></th>
+          </tr>
+          {% endfor %}
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Total Cost: {{object.get_total_amount}}</th>
+            <th scope="col"></th>
+          </tr>
+
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th><a href="{% url 'app1:home' %}" class="btn btn-warning" role="button" aria-pressed="true">Continue</a></th>
+            <th><a href="{% url 'app1:checkout' %}" class="btn btn-danger" role="button" aria-pressed="true">Checkout</a></th>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+
+{% endblock %}

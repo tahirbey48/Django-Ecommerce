@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="container" style="margin-top: 200px;">
+  <section class="text-center mb-4">
+    <div class="row wow fadeIn">
+      {% for item in items_list %}
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+          <div class="view overlay">
+            <img src="{{item.image}}" class="card-img-top"
+              alt="">
+            <a>
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+          <div class="card-body text-center">
+            <a href="" class="grey-text">
+              <h5>{{item.category}}</h5>
+            </a>
+            <h5>
+              <strong>
+                <a href="{{ item.get_that_url }}" class="dark-grey-text"><small>{{item.title}}</small>
+                  <span class="badge badge-pill danger-color">NEW</span>
+                </a>
+              </strong>
+            </h5>
+            <h4 class="font-weight-bold blue-text">
+              <strong>{{item.price}}</strong>
+            </h4>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+
+
+
+{% if items.has_other_pages %}
+<ul class="pagination justify-content-center" >
+{% if items.has_previous %}
+  <li><a href="?page={{ items_list.previous_page_number }}">&laquo;</a></li>
+{% else %}
+  <li class="disabled"><span>&laquo;</span></li>
+{% endif %}
+{% for i in items.paginator.page_range %}
+{% if items.number == i %}
+  <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+{% else %}
+<li><a href="?page={{ i }}">{{ i }}</a></li>
+{% endif %}
+{% endfor %}
+<li class="page-item active">
+<a class="page-link" href="?page={{ page_obj.number }}">{{ items.number }}
+  <span class="sr-only">(current)</span>
+</a>
+</li>
+{% if items.has_next %}
+<li><a href="?page={{ items.next_page_number }}">&raquo;</a></li>
+{% else %}
+<li class="disabled"><span>&raquo;</span></li>
+{% endif %}
+</ul>
+{% endif %}
+</div>
+</div>
+
+
+{% include 'includes/footer.html' %}
+  
+
+
+{% endblock %}
