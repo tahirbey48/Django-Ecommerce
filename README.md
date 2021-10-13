@@ -14,7 +14,7 @@ This Ecommerce app is to be used for online shopping.
 3. djangorestframework==3.12.4
 4. django-crispy-forms==1.1.0
 
-This Webapp uses Python Django Framework.In homepage, products on database are listed. In products page, mockup data is displayed that is fetched provided by https://fakestoreapi.com using rest_framework of Django.
+This Webapp uses Python Django Framework.In homepage, products on database are listed. In products page, mockup data is displayed that is fetched provided by https://fakestoreapi.com using requests module.
 
 
 ### Setup
