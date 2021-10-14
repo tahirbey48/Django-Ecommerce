@@ -9,14 +9,18 @@ from django.views.generic.list import ListView
 from django.core.exceptions import ObjectDoesNotExist
 
 
+#IndexView is a generic view to display data together with DetailView
 class IndexView(ListView):
     model = Item
     paginate_by = 10
     template_name = "homepage.html"
+    #get_context_data returns context data to display list
+    #of objects.  
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['items_list'] = Item.objects.all()
         return context
+
 
 
 def checkoutfun(request):
@@ -43,10 +47,15 @@ def checkoutfun(request):
          }
 
         return redirect("app1:payment")
+        #Returns an HttpResponseRedirect to the corresponding URL and pass argument.
     return render(request,"checkout.html", {'object': order, "form": form})
+    #render is a django.shourtcut function, Combines template with context dictionary 
+    #and returns an HttpResponse object with that rendered text.
+
 
 def addtocartfun(request, slug):
     item = get_object_or_404(Item, slug=slug)
+    #It actually is get() but raises Http404 instead of Model.DoesNotExist exception.
     try:
         cart = CartItem.objects.get(item=item,user = request.user)
     except:
@@ -62,6 +71,7 @@ def addtocartfun(request, slug):
             tooSummary = toSummary[0]
             cart.quantity += 1
             cart.save()
+            #This performs an INSERT SQL statement 
             return redirect("app1:ordersummary")
     else:
         toSummary = Order.objects.create(user=request.user, ordered=False)
@@ -74,6 +84,8 @@ def addtocartfun(request, slug):
 
 def removefromcartfun(request,slug):
     item = get_object_or_404(Item, slug=slug)
+    # Since we know there is only one item matching our query
+    # care Entry.DoesNotExist error
     toSummary = Order.objects.filter(user=request.user, ordered=False)
     if toSummary.exists():
         tooSummary = toSummary[0]
@@ -105,10 +117,23 @@ def ordersummaryfun(request):
     return render(request, 'ordersummary.html', context)
 
 
+def singleproductfun(request,slug):
+    item = get_object_or_404(Item, slug=slug)
+    context = {
+        "item" : item
+    }
+    return render(request,"singleproduct.html",context)
+
+
 def paymentfun(request):
     form = PaymentForm(request.POST or None)
+    # A form is created and view turned an empty form as a response
+    #with render dunction
+    #If a post request sent to server, and is valid, we get the data posted
+    #with form
     if form.is_valid():
         name_on_card = form.cleaned_data.get("name_on_card")
+        # cleaned_data returns a validated dictionary of keys: form input fields values: their values, 
         credit_card_no = form.cleaned_data.get("credit_card_no")
         expiration = form.cleaned_data.get("expiration")
         cvv = form.cleaned_data.get("cvv")
@@ -122,11 +147,3 @@ def paymentfun(request):
         return redirect("app1:home")
     return render(request,"payment.html", {"form" : form})
 
-
-
-def singleproductfun(request,slug):
-    item = get_object_or_404(Item, slug=slug)
-    context = {
-        "item" : item
-    }
-    return render(request,"singleproduct.html",context)

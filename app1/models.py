@@ -6,6 +6,7 @@ class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.FloatField()
     category = models.CharField(max_length=10)
+    #choices= possible for next upgrade
     slug = models.SlugField(unique=True)
     description = models.TextField()
     def __str__(self):          
@@ -31,7 +32,9 @@ class CartItem(models.Model):
     def get_total_single_item_price(self):
         return self.quantity * self.item.price   
 
-        
+    def __str__(self):
+        return self.title   
+
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
@@ -39,6 +42,9 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
     start_date = models.DateTimeField(auto_now_add=True, blank=True)
     ordered_date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
     def get_total_amount(self):
         total = 0
@@ -54,7 +60,16 @@ class MockupItem(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField()
 
-    def get_that_url(self): #kwargs, what I want to pass to my view
-        return reverse("app1_api:mocksingleproduct", kwargs= {"slug" : self.slug})
+    def __str__(self):
+        return self.title
+    # To display an object in the Django admin site
+    # Inserting an easy-to-understand value should be nice for db managers
 
-        
+    def get_absolute_url(self): #kwargs, what I want to pass to my view
+        return reverse("app1_api:mocksingleproduct", kwargs= {"slug" : self.slug})
+    # We used this to convery **kwargs from template to view
+
+
+#Once you’ve created your data models, 
+# Django automatically gives you a database-abstraction 
+# API that lets you create, retrieve, update and delete objects
